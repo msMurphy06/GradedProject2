@@ -1,0 +1,298 @@
+## Ingest logs
+
+python src/mp2_rag.py ingest
+→ Loading corpus…
+  5 documents loaded
+→ Chunking…
+  01_red_headed_league.txt: 7 chunks
+  02_speckled_band.txt: 10 chunks
+  03_blue_carbuncle.txt: 8 chunks
+  04_engineers_thumb.txt: 8 chunks
+  05_scandal_in_bohemia.txt: 11 chunks
+→ Total chunks: 44
+→ Setting up Qdrant collection…
+C:\Users\shwet\IITM_Assignments\IITMGradedProjects\GradedProject2\src\mp2_rag.py:275: DeprecationWarning: `recreate_collection` method is deprecated and will be removed in the future. Use `collection_exists` to check collection existence and `create_collection` instead.
+  qdrant.recreate_collection(
+→ Ingesting…
+  44 chunks upserted into 'Sherlock_collection'
+
+✓ Done. Try: python mp2_rag.py ask
+
+##  Ask questions logs - SImple mode 
+
+$ python src/mp2_rag.py ask
+Mini-RAG over the Sherlock Holmes corpus.
+Type your question. Empty line or Ctrl-C to exit.
+
+? Who is Sherlock Holmes?
+
+Sherlock Holmes is a detective known for his keen observation and deduction skills. He is often accompanied by his friend Dr. John Watson, who narrates many of their adventures. Holmes is characterized by his ability to disguise himself and gather information, as seen in "A Scandal in Bohemia," where he disguises himself as a drunken groom to investigate Irene Adler (source: A Scandal in Bohemia — Holmes Disguises Himself). He is also referred to as "THE woman" by Watson, indicating his significant impact on Holmes's life (source: A Scandal in Bohemia — Introduction). Additionally, he is depicted as a problem-solver who receives clients at his residence, 221B Baker Street, as shown in "The Adventure of the Speckled Band" (source: The Adventure of the Speckled Band — Introduction).
+
+  Sources:
+    - A Scandal in Bohemia — Holmes Disguises Himself
+    - A Scandal in Bohemia — Introduction
+    - The Adventure of the Speckled Band — Introduction
+  Latency: 6045ms
+
+? why did Lysander Stark swear the engineer to secrecy?
+
+Lysander Stark swore the engineer to secrecy as part of the unusual conditions he set for the job. He offered Hatherley fifty guineas for a single evening's work on the condition of "complete secrecy," along with immediate travel that night and the use of his own carriage with the windows blinded. This secrecy was likely intended to conceal the true nature of the work and the activities taking place at his property. (Source: The Adventure of the Engineer's Thumb — The Mysterious Engagement)
+
+  Sources:
+    - The Adventure of the Engineer's Thumb — The Mysterious Engagement
+    - The Adventure of the Engineer's Thumb — Arrival at the House
+    - The Adventure of the Engineer's Thumb — The Hydraulic Press
+  Latency: 4345ms
+
+? what was the true nature of work at the property ?
+
+The true nature of the work at the property was not as it was presented. Colonel Lysander Stark claimed that the hydraulic press was used to compress fuller's earth into bricks, but upon inspection, Hatherley discovered that the press had never been used for that purpose. Instead, the floor of the press chamber was marked by a metallic crust, indicating that something else entirely was being processed there. This led Hatherley to realize that the chamber was actually a trap designed to kill unwanted visitors, rather than a legitimate workspace for compressing clay. (Source: The Adventure of the Engineer's Thumb — The Hydraulic Press)
+
+  Sources:
+    - The Adventure of the Engineer's Thumb — The Mysterious Engagement
+    - The Adventure of the Engineer's Thumb — The Hydraulic Press
+    - The Red-Headed League — The Strange Work
+  Latency: 4630ms
+
+? what is the similarity in the scandal in bohemia and the speckled band?
+
+The similarity between "A Scandal in Bohemia" and "The Adventure of the Speckled Band" lies in the theme of deception and the cleverness of the protagonists. In both stories, Sherlock Holmes is faced with a situation where appearances are misleading, and he must use his intellect to uncover the truth behind a dangerous scenario.
+
+In "A Scandal in Bohemia," Holmes is tasked with retrieving a compromising photograph from Irene Adler, who is clever and resourceful, much like the characters involved in "The Adventure of the Speckled Band." In the latter, Holmes must unravel the mystery of a deadly snake used by Doctor Roylott to murder his stepdaughter, showcasing his ability to see through the facade of danger and deceit.
+
+Both stories highlight Holmes's analytical skills and his encounters with formidable opponents who use cunning and manipulation to achieve their ends. However, the excerpts provided do not contain specific details about "A Scandal in Bohemia," so I cannot provide a direct comparison based solely on the excerpts.
+
+  Sources:
+    - The Adventure of the Speckled Band — Stoke Moran and Doctor Roylott
+    - The Adventure of the Speckled Band — Holmes Investigates
+    - The Adventure of the Speckled Band — The Vigil
+  Latency: 5502ms
+
+## VAlidate logs - Simple mode
+
+python src/mp2_rag.py validate
+
+  Validating 2 questions from predefined_questions.jsonl…
+
+  ✓ q1_red_headed_league_assistant
+      Q: Who was the assistant working at Jabez Wilson's pawnshop, and what was his real identity?
+      A: The assistant working at Jabez Wilson's pawnshop was Vincent Spaulding. His real identity was John Clay, the grandson of a royal duke and one of the most cunning thieves in London. Holmes recognizes Spaulding as John Clay, who is known to be wanted for murder, theft, smashing and forgery (The Red-Headed League — The Identity of the Assistant).
+      Cited: 01_red_headed_league.txt
+      Expected: 01_red_headed_league.txt
+      Facts matched: 3/5
+      Facts missing: thief, white patches on his trouser knees
+      Latency: 4348ms
+
+  ✓ q2_speckled_band_murder_weapon
+      Q: What killed Julia Stoner at Stoke Moran, and how was the method discovered?
+      A: Julia Stoner was killed at Stoke Moran by a snake that had been trained by her stepfather, Doctor Roylott. The method of her death was discovered when Sherlock Holmes explained that Doctor Roylott had trained the snake to climb the bell-rope through the ventilatorand back. On the night of Julia's death, the snake bit her as she lay in bed, leaving no visible mark due to its tiny puncture and quickaction. The bed was bolted in position so that Julia could not be moved out of range of the snake (The Adventure of the Speckled Band — The Explanation).
+
+The evidence surrounding Julia's death included her agitated state before her death, her scream, and her last words: "Oh, my God! Helen!It was the band! The speckled band!" Additionally, the coroner found no cause of death, no poison, no wound, and no struggle, as the door had been locked from the inside and the shutters were closed and barred (The Adventure of the Speckled Band — The Death of Julia Stoner).
+
+The motive for Doctor Roylott's actions was to kill his stepdaughter Julia for her share of the late mother's annuity, which would have transferred to her upon marriage. He had been about to kill Helen for the same reason (The Adventure of the Speckled Band — The Explanation).
+      Cited: 02_speckled_band.txt
+      Expected: 02_speckled_band.txt
+      Facts matched: 5/6
+      Facts missing: swamp adder
+      Latency: 5847ms
+
+  Source-match: 2/2
+
+  Validating 3 questions from learner_questions.jsonl…
+
+  ✓ q3_blue_carbuncle_hat_and_goose
+      Q: Who brought the battered old hat and the Christmas goose to Sherlock Holmes, and what was his job?
+      A: The battered old hat and the Christmas goose were brought to Sherlock Holmes by Peterson, who was in his commissionaire's uniform. Peterson had been walking home when he encountered a tallish man in a black coat carrying the goose. During a scuffle, the man's hat fell off, and Peterson rushed to assist, ultimately rescuing both the goose and the hat (Source: The Adventure of the Blue Carbuncle — The Hat and the Goose).
+      Cited: 03_blue_carbuncle.txt
+      Expected: 03_blue_carbuncle.txt
+      Facts matched: 2/2
+      Facts missing: none
+      Latency: 3450ms
+
+  ✓ q4_engineers_thumb_when_where
+      Q: When and where was Doctor Watson called to treat the young engineer whose thumb had been cut off, and who was the patient?
+      A: Doctor Watson was called to treat the young engineer whose thumb had been cut off in the summer of 1889 at Paddington Station. The patient was Victor Hatherley, a hydraulic engineer of twenty-six. He was described as a "young, pale, well-dressed gentleman whose right hand was wrapped in a bloody handkerchief, his thumb severed cleanly at the base" (The Adventure of the Engineer's Thumb — Introduction).
+      Cited: 04_engineers_thumb.txt
+      Expected: 04_engineers_thumb.txt
+      Facts matched: 4/4
+      Facts missing: none
+      Latency: 2766ms
+
+  ✓ q5_scandal_photograph_hiding_place
+      Q: Where did Irene Adler hide the photograph, how did Holmes trick her into revealing it, and why was it gone when he came back for it?
+      A: Irene Adler hid the photograph in a sliding panel above the bell-pull. Holmes tricked her into revealing its location by disguising himself and using a fire trick, which she recognized. However, when Holmes returned for the photograph, it was gone because Adler had left the country with her new husband, taking the photograph with her. In its place, Holmes found a photograph of Irene Adler alone in evening dress and a letter addressed to "Sherlock Holmes, Esq. To be left till called for" (Source: A Scandal in Bohemia — Irene Adler Wins).
+      Cited: 05_scandal_in_bohemia.txt
+      Expected: 05_scandal_in_bohemia.txt
+      Facts matched: 2/5
+      Facts missing: smoke rocket, Godfrey Norton, Charing Cross
+      Latency: 2924ms
+
+  Source-match: 3/3
+
+
+## VAlidate logs - Refined mode
+python src/mp2_rag.py validate
+
+  Validating 2 questions from predefined_questions.jsonl…
+
+  ✓ q1_red_headed_league_assistant
+      Q: Who was the assistant working at Jabez Wilson's pawnshop, and what was his real identity?
+      A: - Who was the assistant working at Jabez Wilson's pawnshop?
+  The assistant working at Jabez Wilson's pawnshop was Vincent Spaulding. 
+
+- What was the real identity of the assistant working at Jabez Wilson's pawnshop?
+  The real identity of the assistant, Vincent Spaulding, was John Clay, the grandson of a royal duke and one of the most cunning thievesin London. 
+
+(Source: The Red-Headed League — The Strange Work; The Red-Headed League — The Identity of the Assistant)
+      Cited: 01_red_headed_league.txt
+      Expected: 01_red_headed_league.txt
+      Facts matched: 2/5
+      Facts missing: thief, wanted for murder, theft, smashing and forgery, white patches on his trouser knees
+      Latency: 9544ms
+
+  ✓ q2_speckled_band_murder_weapon
+      Q: What killed Julia Stoner at Stoke Moran, and how was the method discovered?
+      A: - What killed Julia Stoner at Stoke Moran?
+Julia Stoner was killed by a snake that had bitten her as she lay in bed. The snake was trained by her stepfather, Doctor Roylott, to climb the bell-rope through the ventilator and back. The bite left no visible mark due to its tiny puncture and quick action (Source: The Adventure of the Speckled Band — The Explanation).
+
+- How was the method of Julia Stoner's death discovered?
+The method of Julia Stoner's death was discovered when Sherlock Holmes and Dr. Watson spent the night in Julia's old bedroom. Holmes waited until just after three in the morning, then lashed furiously at the bell-rope, which led to a wild scream from the next room. Upon rushing into Doctor Roylott's bedroom, they found him dead with a yellow band marked with brown spots wrapped about his head, which was identified as a swamp adder, the deadliest snake in India (Source: The Adventure of the Speckled Band — The Vigil).
+      Cited: 02_speckled_band.txt
+      Expected: 02_speckled_band.txt
+      Facts matched: 5/6
+      Facts missing: trained the snake
+      Latency: 8592ms
+
+  Source-match: 2/2
+
+  Validating 3 questions from learner_questions.jsonl…
+
+  ✓ q3_blue_carbuncle_hat_and_goose
+      Q: Who brought the battered old hat and the Christmas goose to Sherlock Holmes, and what was his job?
+      A: - Who brought the battered old hat to Sherlock Holmes?  
+Peterson, the commissionaire, brought the battered old hat to Sherlock Holmes. (Source: The Adventure of the Blue Carbuncle — Introduction)
+
+- What was Peterson's job?  
+Peterson's job was a commissionaire. (Source: The Adventure of the Blue Carbuncle — The Hat and the Goose)
+
+- Who brought the Christmas goose to Sherlock Holmes?  
+Peterson brought the Christmas goose to Sherlock Holmes. (Source: The Adventure of the Blue Carbuncle — The Hat and the Goose)
+      Cited: 03_blue_carbuncle.txt
+      Expected: 03_blue_carbuncle.txt
+      Facts matched: 2/2
+      Facts missing: none
+      Latency: 7000ms
+
+  ✓ q4_engineers_thumb_when_where
+      Q: When and where was Doctor Watson called to treat the young engineer whose thumb had been cut off, and who was the patient?
+      A: - Doctor Watson was called to treat Victor Hatherley early one morning in the summer of 1889 at Paddington Station. (Source: The Adventure of the Engineer's Thumb — Introduction)
+
+- Victor Hatherley was treated at Paddington Station after his thumb was cut off. (Source: The Adventure of the Engineer's Thumb — Introduction)
+      Cited: 04_engineers_thumb.txt
+      Expected: 04_engineers_thumb.txt
+      Facts matched: 4/4
+      Facts missing: none
+      Latency: 6432ms
+
+  ✓ q5_scandal_photograph_hiding_place
+      Q: Where did Irene Adler hide the photograph, how did Holmes trick her into revealing it, and why was it gone when he came back for it?
+      A: - **Where did Irene Adler hide the photograph?**
+  Irene Adler hid the photograph in "a sliding panel above the bell-pull on the right side of the fireplace" (A Scandal in Bohemia — TheExecution).
+
+- **How did Holmes trick Irene Adler into revealing the photograph?**
+  Holmes tricked Irene Adler into revealing the photograph by staging a scenario where "a brawl breaks out among loiterers" and he, disguised as a clergyman, interposes and is "struck," leading to him being "carried bleeding into Adler's house." During this commotion, "thesmoke rocket comes through the window; cries of fire echo through the building," prompting Irene Adler to dash to the sliding panel and take the photograph (A Scandal in Bohemia — The Execution).
+
+- **Why was the photograph gone when Holmes came back for it?**
+  The photograph was gone when Holmes came back for it because Irene Adler had "left the country by the five-fifteen train from Charing Cross the previous night, bound for the Continent, never to return." In its place, Holmes found "a photograph of Irene Adler alone, in evening dress, and a letter addressed to 'Sherlock Holmes, Esq. To be left till called for'" (A Scandal in Bohemia — Irene Adler Wins).
+      Cited: 05_scandal_in_bohemia.txt
+      Expected: 05_scandal_in_bohemia.txt
+      Facts matched: 4/5
+      Facts missing: Godfrey Norton
+      Latency: 8599ms
+
+  Source-match: 3/3
+
+
+## Validate logs - Hybrid mode
+python src/mp2_rag.py validate
+
+  Validating 2 questions from predefined_questions.jsonl…
+
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights: 100%|██████████████████████████████████████████████████████████████████████████████| 105/105 [00:00<00:00, 3909.64it/s]
+  ✓ q1_red_headed_league_assistant
+      Q: Who was the assistant working at Jabez Wilson's pawnshop, and what was his real identity?
+      A: The assistant working at Jabez Wilson's pawnshop was Vincent Spaulding. His real identity, however, is not explicitly stated inthe excerpts provided. 
+
+- **Who**: Vincent Spaulding
+- **What**: Assistant at Jabez Wilson's pawnshop
+- **Where**: Jabez Wilson's pawnshop near Coburg Square in London
+- **When**: Spaulding had been with Wilson for about a month before the Red-Headed League advertisement appeared.
+- **How**: Spaulding managed the pawnshop while Wilson was occupied with the Red-Headed League.
+- **The evidence**: Wilson described Spaulding as "small, quick, and clever," willing to work for half wages to learn the trade, and noted his fondness for photography.
+- **The motive**: The motive for Spaulding's actions is not detailed in the excerpts.
+
+(Source: The Red-Headed League — The Strange Work; The Red-Headed League — Holmes Investigates; The Red-Headed League — Introduction)
+      Cited: 01_red_headed_league.txt
+      Expected: 01_red_headed_league.txt
+      Facts matched: 1/5
+      Facts missing: John Clay, thief, wanted for murder, theft, smashing and forgery, white patches on his trouser knees
+      Latency: 18369ms
+
+  ✓ q2_speckled_band_murder_weapon
+      Q: What killed Julia Stoner at Stoke Moran, and how was the method discovered?
+      A: Julia Stoner was killed at Stoke Moran by a snake, specifically a "speckled band." The method of her death was discovered by Sherlock Holmes when he examined Julia's old room and noted the peculiarities of the setup, particularly the dummy bell-rope that connectedto a ventilator leading into Doctor Roylott's bedroom. This indicated that something could be passed through the ventilator into Julia'sroom, which ultimately led to the revelation of the snake being used as the murder weapon.
+
+(Source: The Adventure of the Speckled Band — Holmes Investigates and Stoke Moran and Doctor Roylott)
+      Cited: 02_speckled_band.txt
+      Expected: 02_speckled_band.txt
+      Facts matched: 4/6
+      Facts missing: swamp adder, trained the snake
+      Latency: 3657ms
+
+  Source-match: 2/2
+
+  Validating 3 questions from learner_questions.jsonl…
+
+  ✓ q3_blue_carbuncle_hat_and_goose
+      Q: Who brought the battered old hat and the Christmas goose to Sherlock Holmes, and what was his job?
+      A: The battered old hat and the Christmas goose were brought to Sherlock Holmes by Peterson, the commissionaire. 
+
+- **Who**: Peterson, the commissionaire.
+- **What**: Battered old hat and Christmas goose.
+- **Where**: 221B Baker Street, where Holmes resides.
+- **When**: Two mornings after Christmas, specifically on Christmas morning around four o'clock when the incident occurred.
+- **How**: Peterson found the hat and goose after witnessing a scuffle involving a man carrying the goose. He rushed to assist, during which the man dropped the goose and fled, allowing Peterson to rescue both items.
+- **The evidence**: A small card attached to the goose's leg marked "For Mrs Henry Baker" and the initials "H. B." faintly inked inside the hatband.
+- **The motive**: The motive for the original incident is not explicitly stated, but it involves the man being accosted by roughs, leading to the loss of his hat and goose.
+
+(Source: The Adventure of the Blue Carbuncle — Introduction, Tracing Henry Baker, The Hat and the Goose)
+      Cited: 03_blue_carbuncle.txt
+      Expected: 03_blue_carbuncle.txt
+      Facts matched: 2/2
+      Facts missing: none
+      Latency: 4660ms
+
+  ✓ q4_engineers_thumb_when_where
+      Q: When and where was Doctor Watson called to treat the young engineer whose thumb had been cut off, and who was the patient?
+      A: Doctor Watson was called early one morning in the summer of 1889 to attend a patient at Paddington Station. The patient was Victor Hatherley, a hydraulic engineer whose right hand was wrapped in a bloody handkerchief, and his thumb had been severed cleanly at the base (The Adventure of the Engineer's Thumb — Introduction).
+      Cited: 04_engineers_thumb.txt, 03_blue_carbuncle.txt
+      Expected: 04_engineers_thumb.txt
+      Facts matched: 4/4
+      Facts missing: none
+      Latency: 3174ms
+
+  ✓ q5_scandal_photograph_hiding_place
+      Q: Where did Irene Adler hide the photograph, how did Holmes trick her into revealing it, and why was it gone when he came back for it?
+      A: Irene Adler hid the photograph in a sliding panel above the bell-pull on the right side of the fireplace (A Scandal in Bohemia — The Execution). 
+
+Holmes tricked her into revealing it by engineering a quarrel in the street that was carried into Adler's drawing-room. He had Watson wait outside Briony Lodge with a smoke rocket. When Holmes gave the signal by raising his hand, Watson threw the rocket through the open sitting-room window and shouted "Fire!" This caused Irene Adler to instinctively rush to her most valued possession, which Holmes predictedwould be the photograph (A Scandal in Bohemia — The Smoke and Fire Plan).
+
+The photograph was gone when Holmes returned for it because Irene Adler had recognized Holmes in his disguise and had followed him back to Baker Street. She had resolved on instant flight with her husband, whom she had married that very afternoon at St Monica's. She took the photograph with her but promised the King she would never use it against him, keeping it only as a safeguard (A Scandal in Bohemia — Irene Adler Wins).
+      Cited: 05_scandal_in_bohemia.txt
+      Expected: 05_scandal_in_bohemia.txt
+      Facts matched: 3/5
+      Facts missing: Godfrey Norton, Charing Cross
+      Latency: 4710ms
+
+  Source-match: 3/3
