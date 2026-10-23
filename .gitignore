@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Secrets — never commit these
+.env
+.env.local
+*.key
+
+# OS
+.DS_Store
+.cache/*
+.bashrc
+.claude/*
+.config/*
+.dbclient/*
+.local/*
+.npm/*
+.voc/*
+.vscode/*
